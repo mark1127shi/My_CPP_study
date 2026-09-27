@@ -1,3 +1,5 @@
+// This sample.cpp shows the basic of c++
+
 #include <iostream>
 
 int main();
