@@ -4,6 +4,6 @@
 
 int main();
 int main (){
-    std::cout << "This is a example of C++." <<std::endl;
+    std::cout << "This is a example of C++. Hello World" <<std::endl;
     return 0;
 }
