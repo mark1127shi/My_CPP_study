@@ -1,8 +1,7 @@
 #include <iostream>
 
 int main();
-int main(){
-    std::cout << "Hello world!"
-              << std::endl;
+int main (){
+    std::cout << "This is a example of C++. Hello World" <<std::endl;
     return 0;
 }
