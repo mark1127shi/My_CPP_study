@@ -23,6 +23,7 @@ int main(){
     p_int = nullptr; //  changes the pointer ro indecate that it points to no object.
     // this is like a combe in restaurant
     // if we lose access with one object, it will cause a memory leak.
+    return 0;
 }
 /*
 Stack and heap the 2 areas of memory a program uses to store data.
