@@ -122,13 +122,13 @@ std::size_t remove_duplicates(char *array[], std::size_t capacity){
 
 std::size_t find( char *array[], std::size_t capacity, char const *str ){
     std::size_t *num = new std::size_t[capacity];
-    for (std::size_t i = 0; i+1 < capacity; i++){
+    for (std::size_t i = 0; i < capacity; i++){
         if (compare(array[i], str) == 0){
             return i;
         }
     }
 
-    for (std::size_t i = 0; i+1 < capacity; i++){
+    for (std::size_t i = 0; i < capacity; i++){
         num[i] = distance(array[i], str); // get all distances
     }
 
@@ -140,6 +140,8 @@ std::size_t find( char *array[], std::size_t capacity, char const *str ){
             min_num_index = i;
         }
     }
+    delete[] num;
+    num = nullptr;
     return min_num_index;
 }
 
