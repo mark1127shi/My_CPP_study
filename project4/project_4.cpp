@@ -12,10 +12,10 @@ std::size_t length( char const *a){
     }
     return count;
 }
+
 int compare( char const *str1, char const *str2){
-    bool have_result{false};
     int num = 0;
-    while(str1[num] == str2[num]){
+    while(str1[num] == str2[num] && str1[num] != '\0'){ // it can't read '\0' in the end.
         num++;
     }
     if(str1[num]<str2[num]){
@@ -28,18 +28,12 @@ int compare( char const *str1, char const *str2){
 }
 
 void assign( char *str1, char const *str2){
-    assert(sizeof(str1)<= 20 && sizeof(str2) <= 20);
-    int i = 0;
+    std::size_t i = 0;
     while (str2[i] != '\0'){
         str1[i] = str2[i];
         i++;
     }
-    if (str1[i] != '\0'){
-        while (str1[i] != '\0'){ // make sure if str1 longer that str2, we can make all char to '\0'
-            str1[i] =0;
-            i++;
-        }
-    }
+    str1[i] = '\0';
 }
 
 unsigned int distance(char const *str1, char const *str2){// we turn str1 into str2
@@ -61,29 +55,35 @@ unsigned int distance(char const *str1, char const *str2){// we turn str1 into s
 
 std::size_t is_sorted( char *array[], std::size_t capacity){
     std::size_t i = 0;
-    while(i < capacity){
+    while(i+1 < capacity){
         if(compare(array[i],array[i+1]) == -1 || compare(array[i],array[i+1]) == 0){
             i++;
         }else{
-            return i+1;
+            return i;
         }
     }
     return capacity;
 }
 
 void insert( char *array[], std::size_t capacity ){
+    if (capacity < 2) {  // add boundry to capacity less than 2
+        return;
+    }
     bool find_location{false};
     std::size_t i = 0;
     
     while(! find_location){
-        if (i == capacity-1)
+        if (i == capacity-1){
+            find_location = true;
+            break;
+        }
         if (compare(array[i],array[capacity-1]) == 1 || compare(array[i],array[capacity-1]) == 0){
             find_location = true;
         }else{
             i++;
         }
-        
     }
+
     char *temp = new char[length(array[capacity-1]) + 1];
     assign(temp, array[capacity-1]);
     for (std::size_t j = capacity-1; j > i; --j) {
@@ -121,22 +121,26 @@ std::size_t remove_duplicates(char *array[], std::size_t capacity){
 }
 
 std::size_t find( char *array[], std::size_t capacity, char const *str ){
-    std::size_t before{};
-    std::size_t after{};
-    for (std::size_t i = 0; i< capacity; i++){
+    std::size_t *num = new std::size_t[capacity];
+    for (std::size_t i = 0; i+1 < capacity; i++){
         if (compare(array[i], str) == 0){
             return i;
         }
-        if (compare(array[i], str) == -1 && compare(array[i+1], str) == 1 ){
-            before = i;
-            after  = i+1;
+    }
+
+    for (std::size_t i = 0; i+1 < capacity; i++){
+        num[i] = distance(array[i], str); // get all distances
+    }
+
+    std::size_t min_num{num[0]};
+    std::size_t min_num_index{0};
+    for (std::size_t i = 0; i < capacity; i++){
+        if(num[i] < min_num){
+            min_num = num[i];
+            min_num_index = i;
         }
     }
-    if ((distance(array[before], str) <= distance(array[after], str))){
-        return before;
-    }else{
-        return after;
-    }
+    return min_num_index;
 }
 
 void free_word_array( char** word_array ){
